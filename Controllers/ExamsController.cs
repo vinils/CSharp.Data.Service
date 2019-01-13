@@ -95,7 +95,8 @@
                 throw;
             }
 
-            return Created(exams);
+            //return Created(exams);
+            return Ok();
         }
 
         public async Task<IHttpActionResult> Post(Exam exam)
