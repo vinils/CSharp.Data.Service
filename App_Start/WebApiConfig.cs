@@ -24,6 +24,13 @@
                 .Collection
                 .Action("BulkInsert")
                 .CollectionEntityParameter<Exam>("Exams");
+            builder
+                .EntityType<Group>()
+                .Collection
+                .Action("BulkInsertByName")
+                .ReturnsCollectionFromEntitySet<Group>("Groups")
+                .EntityParameter<Controllers.GroupNameTree>("Groups");
+
             return builder.GetEdmModel();
         }
 
