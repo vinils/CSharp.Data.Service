@@ -75,12 +75,10 @@
             }
 
             var exams = parameters["Exams"] as System.Collections.Generic.IEnumerable<Exam>;
-
             var examsDistinct = exams
                 .GroupBy(e => new { e.CollectionDate, e.GroupId })
                 .Select(eG => eG.First())
                 .ToList();
-
             var missingRecords = examsDistinct
                 .Where(d => !_context.Exam.Any(e => e.CollectionDate == d.CollectionDate && e.GroupId == d.GroupId)).ToList();
 
@@ -95,8 +93,7 @@
                 throw;
             }
 
-            //return Created(exams);
-            return Ok();
+            return Ok(missingRecords);
         }
 
         public async Task<IHttpActionResult> Post(Exam exam)

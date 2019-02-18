@@ -23,6 +23,7 @@
                 .EntityType<Exam>()
                 .Collection
                 .Action("BulkInsert")
+                .ReturnsCollectionFromEntitySet<Exam>("Exams")
                 .CollectionEntityParameter<Exam>("Exams");
             builder
                 .EntityType<Group>()
