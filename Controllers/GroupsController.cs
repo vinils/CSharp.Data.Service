@@ -3,7 +3,6 @@
     using Data.Models;
     using Microsoft.AspNet.OData;
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Data.Entity.Infrastructure;
     using System.Linq;
@@ -16,9 +15,16 @@
         {
             foreach (var rootGroup in rootGroups)
             {
-                var newRootDictionary = rootDictionary.New(rootGroup);
-                var newRootGroups = groups.Where(g => g.ParentId == rootGroup.Id).ToList();
-                CastListToDictionaryTree(groups, newRootDictionary, newRootGroups);
+                try
+                {
+                    var newRootDictionary = rootDictionary.New(rootGroup);
+                    var newRootGroups = groups.Where(g => g.ParentId == rootGroup.Id).ToList();
+                    CastListToDictionaryTree(groups, newRootDictionary, newRootGroups);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
 
@@ -31,7 +37,7 @@
             return root;
         }
 
-        private static string treatIndex(string text)
+        public static string RemoveAccentsToUpper(this string text)
         {
             if (string.IsNullOrWhiteSpace(text))
             {
@@ -63,29 +69,50 @@
         public string Name { get; set; }
         public IEnumerable<GroupNameTree> Childs { get; set; }
 
-        private static string treatIndex(string text)
+        private GroupNameTree FindChild(string name)
         {
-            if (string.IsNullOrWhiteSpace(text))
+            return Childs?.Where(g => g.Name.Equals(name)).FirstOrDefault();
+        }
+
+        private GroupNameTree FindChild(params string[] names)
+        {
+            GroupNameTree lastChild = this;
+            foreach (var name in names)
             {
-                return text;
+                lastChild = lastChild.FindChild(name);
+
+                if (lastChild == null)
+                    return null;
             }
+            return lastChild;
+        }
 
-            var normalizedString = text.Normalize(System.Text.NormalizationForm.FormD);
-            var stringBuilder = new System.Text.StringBuilder();
+        public GroupNameTree FindChild(string rootName, params string[] childsNames)
+        {
+            if (childsNames == null || childsNames.Length == 0)
+                throw new ArgumentNullException("names argument null or empty");
 
-            foreach (var c in normalizedString)
-            {
-                var unicodeCategory = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c);
-                if (unicodeCategory != System.Globalization.UnicodeCategory.NonSpacingMark)
-                {
-                    stringBuilder.Append(c);
-                }
-            }
+            if (!Name.Equals(rootName))
+                throw new ArgumentException($"Root name {rootName} not equals this root name {Name}!");
 
-            return stringBuilder
-                .ToString()
-                .Normalize(System.Text.NormalizationForm.FormC)
-                .ToUpper();
+            return FindChild(childsNames);
+        }
+
+        public GroupNameTree Find(params string[] names)
+        {
+            if (names == null || names.Length == 0)
+                throw new ArgumentNullException("names argument null or empty");
+            
+            var rootName = names[0];
+
+            if (!Name.Equals(rootName))
+                return null;
+
+            if (names.Length == 1)
+                return this;
+
+            var childsNames = names.Skip(1).ToArray();
+            return FindChild(rootName, childsNames);
         }
 
         public List<Group> CastToGroupList(Group parent, Func<Group, GroupNameTree, Group> cast)
@@ -102,35 +129,42 @@
             return ret;
         }
 
-        private List<Group> NotIn(DictionaryTree<Group, string> dictionaryTree, Func<GroupNameTree, string> getKey)
+        public List<Group> NotIn(DictionaryTree<Group, string> root, Func<GroupNameTree, string> getKey)
         {
             var key = getKey(this);
             var ret = new List<Group>();
 
-            if (dictionaryTree.ContainsKey(key))
+            if (root.ContainsKey(key))
             {
                 foreach(var child in Childs)
                 {
-                    ret.AddRange(child.NotIn(dictionaryTree[key], getKey));
+                    ret.AddRange(child.NotIn(root[key], getKey));
                 }
             }
             else
             {
                 Group cast(Group parent, GroupNameTree group) => new Group() { Id = Guid.NewGuid(), Name = group.Name, ParentId = parent?.Id };
-                return CastToGroupList(dictionaryTree.Data, cast);
+                return CastToGroupList(root.Data, cast);
             }
 
             return ret;
         }
 
-        public List<Group> NotIn(System.Data.Entity.DbSet<Group> groupsDb)
-        {
-            string getKey(Group group) => treatIndex(group.Name);
-            string getGroupNameKey(GroupNameTree group) => treatIndex(group.Name);
+        //public List<Group> NotIn(DictionaryTree<Group, string> dictionaryTree, Func<GroupNameTree, string> getKey, string[] keys)
+        //{
+        //    var node = this.Find(keys);
+        //    return node.NotIn(dictionaryTree, getKey);
+        //}
 
-            var groups = groupsDb.ToDictionaryTree(getKey);
-            return NotIn(groups, getGroupNameKey);
-        }
+        //public List<Group> NotIn(System.Data.Entity.DbSet<Group> groupsDb, string[] root = null)
+        //{
+        //    string getKey(Group group) => treatIndex(group.Name);
+        //    string getGroupNameKey(GroupNameTree group) => treatIndex(group.Name);
+
+        //    var groups = groupsDb.ToDictionaryTree(getKey);
+        //    var node = root != null ? groups[root] : groups;
+        //    return NotIn(node, getGroupNameKey);
+        //}
     }
 
     public class GroupsController : ODataController
@@ -312,27 +346,40 @@
         private bool GroupExists(Guid key)
             => _context.Group.Any(e => e.Id == key);
 
-        public async Task<IHttpActionResult> BulkInsertByName(ODataActionParameters parameters)
+        public IHttpActionResult BulkInsertByName(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var groups = parameters["Groups"] as GroupNameTree;
-            var newGroups = groups.NotIn(_context.Group);
+            var newNode = parameters["NewGroups"] as GroupNameTree;
+            var rootPath = (parameters["RootPath"] as IEnumerable<string>).ToArray();
+            var firstRoot = rootPath[0];
+
+            //_context.Configuration.LazyLoadingEnabled = true;
+
+            var firstRootGroup = _context.Group
+                .Where(g => g.Name == firstRoot)
+                .First();
+
+            var lastRootGroup = firstRootGroup
+                .Find(g => g.Name, rootPath)
+                .ToDictionaryTree(g => MyExtensions.RemoveAccentsToUpper(g.Name));
+
+            string getKey(GroupNameTree g) => MyExtensions.RemoveAccentsToUpper(g.Name);
+            var newGroups = newNode.NotIn(lastRootGroup, getKey);
 
             _context.Group.AddRange(newGroups);
 
             try
             {
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             catch (DbUpdateException)
             {
                 throw;
             }
-
             return Ok(newGroups);
         }
     }
@@ -391,6 +438,17 @@
                 }
                 return lastDictionary;
             }
+        }
+
+        public void Add(T data)
+            => New(data);
+
+        public void Add(DictionaryTree<T, Y> dictionaryTree)
+        {
+            if (dictionaryTree.Parent != this)
+                throw new ArgumentException("Not in the same parent");
+
+            this.Add(getKey(dictionaryTree.Data), dictionaryTree);
         }
 
         public bool ContainsKey(T data)
