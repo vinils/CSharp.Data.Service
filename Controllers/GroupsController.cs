@@ -389,12 +389,12 @@
         public DictionaryTree<T, Y> Parent { get; private set; }
         public T Data { get; private set; }
         protected readonly Func<T, Y> getKey;
-        protected Y key => getKey(Data);
+        private Y key => getKey(Data);
         protected List<Y> GetKeyList()
         {
             var ret = new List<Y>();
 
-            if (Parent.key != null)
+            if (Parent?.key != null)
                 ret.AddRange(Parent.GetKeyList());
 
             ret.Add(key);
