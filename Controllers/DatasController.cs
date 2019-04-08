@@ -95,8 +95,7 @@
                 throw;
             }
 
-            //return Created(datas);
-            return Ok();
+            return Ok(missingRecords);
         }
 
         public async Task<IHttpActionResult> Post(Data data)

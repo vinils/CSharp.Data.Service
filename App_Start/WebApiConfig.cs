@@ -28,7 +28,18 @@
                 .EntityType<Data>()
                 .Collection
                 .Action("BulkInsert")
+                .ReturnsCollectionFromEntitySet<Data>("Datas")
                 .CollectionEntityParameter<Data>("Datas");
+            var groupBulkInsertByName = builder
+                .EntityType<Group>()
+                .Collection
+                .Action("BulkInsertByName")
+                .ReturnsCollectionFromEntitySet<Group>("Groups");
+            groupBulkInsertByName
+                .EntityParameter<Controllers.GroupNameTree>("NewGroups");
+            groupBulkInsertByName
+                .CollectionParameter<string>("RootPath");
+
             return builder.GetEdmModel();
         }
 
