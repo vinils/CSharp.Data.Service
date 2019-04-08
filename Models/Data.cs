@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public abstract class Exam
+    public abstract class Data
     {
         [Key, Column(Order = 1)]
         public Guid GroupId { get; set; }

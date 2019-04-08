@@ -4,13 +4,13 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class LimitDecimalDenormalized : IExamLimit
+    public class LimitDecimalDenormalized : IDataLimit
     {
         [Key, Column(Order = 1)]
-        [ForeignKey("Exam")]
+        [ForeignKey("Data")]
         public Guid GroupId { get; set; }
         [Key, Column(Order = 2)]
-        [ForeignKey("Exam")]
+        [ForeignKey("Data")]
         public DateTime CollectionDate { get; set; }
 
         public string Name { get; set; }
@@ -20,7 +20,7 @@
         public decimal? Max { get; set; }
         public int? Color { get; set; }
 
-        public virtual ExamDecimal Exam { get; set; }
+        public virtual DataDecimal Data { get; set; }
 
         public string Description
         {

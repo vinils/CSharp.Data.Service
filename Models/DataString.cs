@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class ExamString : Exam
+    public class DataString : Data
     {
         [Required]
         public string StringValue { get; set; }

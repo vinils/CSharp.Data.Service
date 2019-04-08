@@ -1,6 +1,6 @@
 ﻿namespace Data.Models
 {
-    public interface IExamLimit
+    public interface IDataLimit
     {
         int? Color { get; }
         string Description { get; }

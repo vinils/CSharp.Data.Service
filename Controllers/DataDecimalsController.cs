@@ -8,29 +8,29 @@
     using System.Web.Http;
     using System.Data.Entity.Infrastructure;
 
-    public class ExamDecimalsController : ODataController
+    public class DataDecimalsController : ODataController
     {
         private DataContext _context;
 
-        public ExamDecimalsController()
+        public DataDecimalsController()
             => _context = new DataContext();
 
-        public ExamDecimalsController(DataContext context)
+        public DataDecimalsController(DataContext context)
             => _context = context;
 
-        // GET: odata/ExamDecimals
+        // GET: odata/DataDecimals
         [EnableQuery]
-        public IQueryable<ExamDecimal> Get()
-            => _context.ExamDecimal;
+        public IQueryable<DataDecimal> Get()
+            => _context.DataDecimal;
 
-        // GET: odata/ExamDecimals(5)
+        // GET: odata/DataDecimals(5)
         [EnableQuery]
-        public SingleResult<ExamDecimal> GetExam([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate)
-            => SingleResult.Create(_context.ExamDecimal
+        public SingleResult<DataDecimal> GetData([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate)
+            => SingleResult.Create(_context.DataDecimal
                 .Where(m => m.GroupId == groupId && m.CollectionDate == collectionDate));
 
-        //// PUT: odata/ExamDecimals(5)
-        //public async Task<IActionResult> Put([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate, Delta<ExamDecimal> patch)
+        //// PUT: odata/DataDecimals(5)
+        //public async Task<IActionResult> Put([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate, Delta<DataDecimal> patch)
         //{
         //    //Validate(patch.GetEntity());
 
@@ -39,13 +39,13 @@
         //        return BadRequest(ModelState);
         //    }
 
-        //    ExamDecimal exam = await _context.ExamDecimals.FindAsync(groupId, collectionDate);
-        //    if (exam == null)
+        //    DataDecimal data = await _context.DataDecimals.FindAsync(groupId, collectionDate);
+        //    if (data == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    patch.Put(exam);
+        //    patch.Put(data);
 
         //    try
         //    {
@@ -53,7 +53,7 @@
         //    }
         //    catch (DbUpdateConcurrencyException)
         //    {
-        //        if (!ExamExists(groupId, collectionDate))
+        //        if (!DataExists(groupId, collectionDate))
         //        {
         //            return NotFound();
         //        }
@@ -63,17 +63,17 @@
         //        }
         //    }
 
-        //    return Updated(exam);
+        //    return Updated(data);
         //}
 
-        public async Task<IHttpActionResult> Post(ExamDecimal exam)
+        public async Task<IHttpActionResult> Post(DataDecimal data)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.ExamDecimal.Add(exam);
+            _context.DataDecimal.Add(data);
 
             try
             {
@@ -81,7 +81,7 @@
             }
             catch (DbUpdateException)
             {
-                if (ExamExists(exam.GroupId, exam.CollectionDate))
+                if (DataExists(data.GroupId, data.CollectionDate))
                 {
                     return Conflict();
                 }
@@ -91,12 +91,12 @@
                 }
             }
 
-            return Created(exam);
+            return Created(data);
         }
 
-        //// PATCH: odata/ExamDecimals(5)
+        //// PATCH: odata/DataDecimals(5)
         //[AcceptVerbs("PATCH", "MERGE")]
-        //public async Task<IActionResult> Patch([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate, Delta<ExamDecimal> patch)
+        //public async Task<IActionResult> Patch([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate, Delta<DataDecimal> patch)
         //{
         //    //Validate(patch.GetEntity());
 
@@ -105,13 +105,13 @@
         //        return BadRequest(ModelState);
         //    }
 
-        //    ExamDecimal exam = await _context.ExamDecimals.FindAsync(groupId, collectionDate);
-        //    if (exam == null)
+        //    DataDecimal data = await _context.DataDecimals.FindAsync(groupId, collectionDate);
+        //    if (data == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    patch.Patch(exam);
+        //    patch.Patch(data);
 
         //    try
         //    {
@@ -119,7 +119,7 @@
         //    }
         //    catch (DbUpdateConcurrencyException)
         //    {
-        //        if (!ExamExists(groupId, collectionDate))
+        //        if (!DataExists(groupId, collectionDate))
         //        {
         //            return NotFound();
         //        }
@@ -129,32 +129,32 @@
         //        }
         //    }
 
-        //    return Updated(exam);
+        //    return Updated(data);
         //}
 
-        //// DELETE: odata/ExamDecimals(5)
+        //// DELETE: odata/DataDecimals(5)
         //public async Task<IActionResult> Delete([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate)
         //{
-        //    ExamDecimal exam = await _context.ExamDecimals.FindAsync(groupId, collectionDate);
-        //    if (exam == null)
+        //    DataDecimal data = await _context.DataDecimals.FindAsync(groupId, collectionDate);
+        //    if (data == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    _context.ExamDecimals.Remove(exam);
+        //    _context.DataDecimals.Remove(data);
         //    await _context.SaveChangesAsync();
 
         //    return StatusCode((int) HttpStatusCode.NoContent);
         //}
 
-        // GET: odata/ExamDecimals(5)/Group
+        // GET: odata/DataDecimals(5)/Group
         [EnableQuery]
         public SingleResult<Group> GetGroup([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate)
-            => SingleResult.Create(_context.ExamDecimal
+            => SingleResult.Create(_context.DataDecimal
                 .Where(m => m.GroupId == groupId && m.CollectionDate == collectionDate).Select(e=> e.Group));
 
-        private bool ExamExists(Guid groupId, DateTime collectionDate)
-            => _context.ExamDecimal
+        private bool DataExists(Guid groupId, DateTime collectionDate)
+            => _context.DataDecimal
             .Any(e => e.GroupId == groupId && e.CollectionDate == collectionDate);
     }
 }

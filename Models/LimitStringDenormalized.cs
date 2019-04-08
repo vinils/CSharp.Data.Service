@@ -7,15 +7,15 @@
     public class LimitStringDenormalized
     {
         [Key, Column(Order = 1)]
-        [ForeignKey("Exam")]
+        [ForeignKey("Data")]
         public Guid GroupId { get; set; }
         [Key, Column(Order = 2)]
-        [ForeignKey("Exam")]
+        [ForeignKey("Data")]
         public DateTime CollectionDate { get; set; }
 
         public string Expected { get; set; }
         public int? Color { get; set; }
 
-        public virtual ExamString Exam { get; set; }
+        public virtual DataString Data { get; set; }
     }
 }

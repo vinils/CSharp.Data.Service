@@ -135,22 +135,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\ExamDecimalsController.cs" />
-    <Compile Include="Controllers\ExamsController.cs" />
+    <Compile Include="Controllers\DataDecimalsController.cs" />
+    <Compile Include="Controllers\DatasController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\LimitDecimalDenormalizedsController.cs" />
     <Compile Include="Controllers\LimitStringDenormalizedsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904082141134_Initial.cs" />
+    <Compile Include="Migrations\201904082141134_Initial.Designer.cs">
+      <DependentUpon>201904082141134_Initial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Cube.cs" />
     <Compile Include="Models\DataContext.cs" />
-    <Compile Include="Models\Exam.cs" />
-    <Compile Include="Models\ExamDecimal.cs" />
-    <Compile Include="Models\ExamString.cs" />
+    <Compile Include="Models\Data.cs" />
+    <Compile Include="Models\DataDecimal.cs" />
+    <Compile Include="Models\DataString.cs" />
     <Compile Include="Models\Group.cs" />
-    <Compile Include="Models\IExamLimit.cs" />
+    <Compile Include="Models\IDataLimit.cs" />
     <Compile Include="Models\LimitDecimal.cs" />
     <Compile Include="Models\LimitDecimalDenormalized.cs" />
     <Compile Include="Models\LimitStringDenormalized.cs" />
@@ -169,6 +173,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201904082141134_Initial.resx">
+      <DependentUpon>201904082141134_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

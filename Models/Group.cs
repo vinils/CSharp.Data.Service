@@ -17,7 +17,7 @@
         public string MeasureUnit { get; set; }
         [ForeignKey("ParentId")]
         public virtual Group Parent { get; set; }
-        public virtual ICollection<Exam> Exams { get; set; }
+        public virtual ICollection<Data> Datas { get; set; }
         public virtual ICollection<Group> Childs { get; set; }
         public virtual ICollection<LimitDecimal> LimitDecimals { get; set; }
 

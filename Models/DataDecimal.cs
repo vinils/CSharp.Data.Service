@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class ExamDecimal : Exam
+    public class DataDecimal : Data
     {
         [Required]
         public decimal DecimalValue { get; set; }
