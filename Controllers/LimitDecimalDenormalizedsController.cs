@@ -142,11 +142,11 @@
         //    return StatusCode((int)HttpStatusCode.NoContent);
         //}
 
-        // GET: odata/LimitDecimalDenormalizedsV4(5)/ExamDecimal
+        // GET: odata/LimitDecimalDenormalizedsV4(5)/DataDecimal
         [EnableQuery]
-        public SingleResult<ExamDecimal> GetExamDecimal([FromODataUri] Guid key)
+        public SingleResult<DataDecimal> GetDataDecimal([FromODataUri] Guid key)
             => SingleResult.Create(_context.LimitDecimalDenormalized
-                .Where(m => m.GroupId == key).Select(e => e.Exam));
+                .Where(m => m.GroupId == key).Select(e => e.Data));
 
         private bool LimitDenormalizedExists(Guid key)
             => _context.LimitDecimalDenormalized.Any(e => e.GroupId == key);

@@ -102,7 +102,7 @@
         {
             if (names == null || names.Length == 0)
                 throw new ArgumentNullException("names argument null or empty");
-            
+
             var rootName = names[0];
 
             if (!Name.Equals(rootName))
@@ -121,7 +121,7 @@
             var root = cast(parent, this);
             ret.Add(root);
 
-            foreach(var child in Childs)
+            foreach (var child in Childs)
             {
                 ret.AddRange(child.CastToGroupList(root, cast));
             }
@@ -136,7 +136,7 @@
 
             if (root.ContainsKey(key))
             {
-                foreach(var child in Childs)
+                foreach (var child in Childs)
                 {
                     ret.AddRange(child.NotIn(root[key], getKey));
                 }
@@ -165,6 +165,45 @@
         //    var node = root != null ? groups[root] : groups;
         //    return NotIn(node, getGroupNameKey);
         //}
+    }
+
+    public class GroupDictionaryByName : System.Collections.Generic.Dictionary<string, GroupDictionaryByName>
+    {
+        public System.Collections.Generic.List<Data> Datas = new System.Collections.Generic.List<Data>();
+
+        public void Add(Data data, params string[] keys)
+        {
+            var lastGroup = this;
+
+            foreach (var key in keys)
+            {
+                if (!lastGroup.ContainsKey(key))
+                {
+                    lastGroup.Add(key, new GroupDictionaryByName());
+                }
+
+                lastGroup = lastGroup[key];
+            }
+
+            lastGroup.Datas.Add(data);
+        }
+
+        public System.Collections.Generic.List<string> ToString2(string rootKey = "")
+        {
+            var ret = new System.Collections.Generic.List<string>();
+
+            if (rootKey != "")
+            {
+                ret.Add(rootKey);
+            }
+
+            foreach (var group in this)
+            {
+                ret.AddRange(group.Value.ToString2(rootKey + "\\" + group.Key));
+            }
+
+            return ret;
+        }
     }
 
     public class GroupsController : ODataController
@@ -333,10 +372,10 @@
         //    return groups.Where(s => filterIds.Contains(s.Id)).AsQueryable();
         //}
 
-        // GET: odata/Groups2(5)/Exams
+        // GET: odata/Groups2(5)/Datas
         [EnableQuery]
-        public SingleResult<Exam> GetExams([FromODataUri] Guid key)
-            => SingleResult.Create(_context.Group.Where(m => m.Id == key).SelectMany(m => m.Exams));
+        public SingleResult<Data> GetDatas([FromODataUri] Guid key)
+            => SingleResult.Create(_context.Group.Where(m => m.Id == key).SelectMany(m => m.Datas));
 
         // GET: odata/Groups2(5)/Parent
         [EnableQuery]
@@ -481,4 +520,38 @@
             return lastDictionary;
         }
     }
+
+
+    //[HttpPost]
+    //public async Task<IHttpActionResult> BulkInsert(ODataActionParameters parameters)
+    //{
+    //    if (!ModelState.IsValid)
+    //    {
+    //        return BadRequest(ModelState);
+    //    }
+
+    //    var datas = parameters["Datas"] as System.Collections.Generic.IEnumerable<Data>;
+
+    //    var datasDistinct = datas
+    //        .GroupBy(e => new { e.CollectionDate, e.GroupId })
+    //        .Select(eG => eG.First())
+    //        .ToList();
+
+    //    var missingRecords = datasDistinct
+    //        .Where(d => !_context.Data.Any(e => e.CollectionDate == d.CollectionDate && e.GroupId == d.GroupId)).ToList();
+
+    //    _context.Data.AddRange(missingRecords);
+
+    //    try
+    //    {
+    //        await _context.SaveChangesAsync();
+    //    }
+    //    catch (DbUpdateException)
+    //    {
+    //        throw;
+    //    }
+
+    //    //return Created(datas);
+    //    return Ok();
+    //}
 }

@@ -15,16 +15,21 @@
         {
             var builder = new ODataConventionModelBuilder();
             builder.EntitySet<Group>("Groups");
-            builder.EntitySet<Exam>("Exams");
-            builder.EntitySet<ExamDecimal>("ExamDecimals");
+            builder.EntitySet<Data>("Datas");
+            builder.EntitySet<DataDecimal>("DataDecimals");
             builder.EntitySet<LimitDecimalDenormalized>("LimitDecimalDenormalizeds");
             builder.EntitySet<LimitStringDenormalized>("LimitStringDenormalizeds");
             builder
-                .EntityType<Exam>()
+                .EntityType<Group>()
+                .Collection
+                .Action("BulkInsertByName")
+                .Parameter<Controllers.GroupDictionaryByName>("Groups");
+            builder
+                .EntityType<Data>()
                 .Collection
                 .Action("BulkInsert")
-                .ReturnsCollectionFromEntitySet<Exam>("Exams")
-                .CollectionEntityParameter<Exam>("Exams");
+                .ReturnsCollectionFromEntitySet<Data>("Datas")
+                .CollectionEntityParameter<Data>("Datas");
             var groupBulkInsertByName = builder
                 .EntityType<Group>()
                 .Collection

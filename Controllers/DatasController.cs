@@ -8,29 +8,29 @@
     using System.Threading.Tasks;
     using System.Web.Http;
 
-    public class ExamsController : ODataController
+    public class DatasController : ODataController
     {
         private DataContext _context;
 
-        public ExamsController()
+        public DatasController()
             => _context = new DataContext();
 
-        public ExamsController(DataContext context)
+        public DatasController(DataContext context)
             => _context = context;
 
-        // GET: odata/Exams
+        // GET: odata/Datas
         [EnableQuery]
-        public IQueryable<Exam> Get()
-            => _context.Exam;
+        public IQueryable<Data> Get()
+            => _context.Data;
 
-        // GET: odata/Exams(5)
+        // GET: odata/Datas(5)
         [EnableQuery]
-        public SingleResult<Exam> GetExam([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate)
-            => SingleResult.Create(_context.Exam
+        public SingleResult<Data> GetData([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate)
+            => SingleResult.Create(_context.Data
                 .Where(m => m.GroupId == groupId && m.CollectionDate == collectionDate));
 
-        //// PUT: odata/Exams(5)
-        //public async Task<IActionResult> Put([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate, Delta<Exam> patch)
+        //// PUT: odata/Datas(5)
+        //public async Task<IActionResult> Put([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate, Delta<Data> patch)
         //{
         //    //Validate(patch.GetEntity());
 
@@ -39,13 +39,13 @@
         //        return BadRequest(ModelState);
         //    }
 
-        //    Exam exam = await _context.Exams.FindAsync(groupId, collectionDate);
-        //    if (exam == null)
+        //    Data data = await _context.Datas.FindAsync(groupId, collectionDate);
+        //    if (data == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    patch.Put(exam);
+        //    patch.Put(data);
 
         //    try
         //    {
@@ -53,7 +53,7 @@
         //    }
         //    catch (DbUpdateConcurrencyException)
         //    {
-        //        if (!ExamExists(groupId, collectionDate))
+        //        if (!DataExists(groupId, collectionDate))
         //        {
         //            return NotFound();
         //        }
@@ -63,7 +63,7 @@
         //        }
         //    }
 
-        //    return Updated(exam);
+        //    return Updated(data);
         //}
 
         [HttpPost]
@@ -74,15 +74,17 @@
                 return BadRequest(ModelState);
             }
 
-            var exams = parameters["Exams"] as System.Collections.Generic.IEnumerable<Exam>;
-            var examsDistinct = exams
+            var datas = parameters["Datas"] as System.Collections.Generic.IEnumerable<Data>;
+
+            var datasDistinct = datas
                 .GroupBy(e => new { e.CollectionDate, e.GroupId })
                 .Select(eG => eG.First())
                 .ToList();
-            var missingRecords = examsDistinct
-                .Where(d => !_context.Exam.Any(e => e.CollectionDate == d.CollectionDate && e.GroupId == d.GroupId)).ToList();
 
-            _context.Exam.AddRange(missingRecords);
+            var missingRecords = datasDistinct
+                .Where(d => !_context.Data.Any(e => e.CollectionDate == d.CollectionDate && e.GroupId == d.GroupId)).ToList();
+
+            _context.Data.AddRange(missingRecords);
 
             try
             {
@@ -96,14 +98,14 @@
             return Ok(missingRecords);
         }
 
-        public async Task<IHttpActionResult> Post(Exam exam)
+        public async Task<IHttpActionResult> Post(Data data)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Exam.Add(exam);
+            _context.Data.Add(data);
 
             try
             {
@@ -111,7 +113,7 @@
             }
             catch (DbUpdateException)
             {
-                if (ExamExists(exam.GroupId, exam.CollectionDate))
+                if (DataExists(data.GroupId, data.CollectionDate))
                 {
                     return Conflict();
                 }
@@ -121,12 +123,12 @@
                 }
             }
 
-            return Created(exam);
+            return Created(data);
         }
 
-        //// PATCH: odata/Exams(5)
+        //// PATCH: odata/Datas(5)
         //[AcceptVerbs("PATCH", "MERGE")]
-        //public async Task<IActionResult> Patch([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate, Delta<Exam> patch)
+        //public async Task<IActionResult> Patch([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate, Delta<Data> patch)
         //{
         //    //Validate(patch.GetEntity());
 
@@ -135,13 +137,13 @@
         //        return BadRequest(ModelState);
         //    }
 
-        //    var exam = await _context.Exams.FindAsync(groupId, collectionDate);
-        //    if (exam == null)
+        //    var data = await _context.Datas.FindAsync(groupId, collectionDate);
+        //    if (data == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    patch.Patch(exam);
+        //    patch.Patch(data);
 
         //    try
         //    {
@@ -149,7 +151,7 @@
         //    }
         //    catch (DbUpdateConcurrencyException)
         //    {
-        //        if (!ExamExists(groupId, collectionDate))
+        //        if (!DataExists(groupId, collectionDate))
         //        {
         //            return NotFound();
         //        }
@@ -159,32 +161,32 @@
         //        }
         //    }
 
-        //    return Updated(exam);
+        //    return Updated(data);
         //}
 
-        //// DELETE: odata/Exams(5)
+        //// DELETE: odata/Datas(5)
         //public async Task<IActionResult> Delete([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate)
         //{
-        //    var exam = await _context.Exams.FindAsync(groupId, collectionDate);
-        //    if (exam == null)
+        //    var data = await _context.Datas.FindAsync(groupId, collectionDate);
+        //    if (data == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    _context.Exams.Remove(exam);
+        //    _context.Datas.Remove(data);
         //    await _context.SaveChangesAsync();
 
         //    return StatusCode((int)HttpStatusCode.NoContent);
         //}
 
-        // GET: odata/Exams(5)/Group
+        // GET: odata/Datas(5)/Group
         [EnableQuery]
         public SingleResult<Group> GetGroup([FromODataUri] Guid groupId, [FromODataUri] DateTime collectionDate)
-            => SingleResult.Create(_context.Exam
+            => SingleResult.Create(_context.Data
                 .Where(m => m.GroupId == groupId && m.CollectionDate == collectionDate).Select(e => e.Group));
 
-        private bool ExamExists(Guid groupId, DateTime collectionDate)
-            => _context.Exam
+        private bool DataExists(Guid groupId, DateTime collectionDate)
+            => _context.Data
             .Any(e => e.GroupId == groupId && e.CollectionDate == collectionDate);
     }
 }

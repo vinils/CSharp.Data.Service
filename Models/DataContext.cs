@@ -5,9 +5,9 @@
 
     public class DataContext : DbContext
     {
-        public DbSet<Exam> Exam { get; set; }
-        public DbSet<ExamString> ExamString { get; set; }
-        public DbSet<ExamDecimal> ExamDecimal { get; set; }
+        public DbSet<Data> Data { get; set; }
+        public DbSet<DataString> DataString { get; set; }
+        public DbSet<DataDecimal> DataDecimal { get; set; }
         public DbSet<LimitDecimal> LimitDecimal { get; set; }
         public DbSet<LimitDecimalDenormalized> LimitDecimalDenormalized { get; set; }
         public DbSet<LimitStringDenormalized> LimitStringDenormalized { get; set; }
