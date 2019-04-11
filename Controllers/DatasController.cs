@@ -67,7 +67,7 @@
         //}
 
         [HttpPost]
-        public async Task<IHttpActionResult> BulkInsert(ODataActionParameters parameters)
+        public IHttpActionResult BulkInsert(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
             {
@@ -76,19 +76,33 @@
 
             var datas = parameters["Datas"] as System.Collections.Generic.IEnumerable<Data>;
 
+            if (!datas.Any())
+                return Ok(new Data[] { });
+
             var datasDistinct = datas
                 .GroupBy(e => new { e.CollectionDate, e.GroupId })
                 .Select(eG => eG.First())
                 .ToList();
 
+            var dates = datasDistinct.GroupBy(e => e.CollectionDate).Select(e=> e.Key);
+            var minData = dates.Min();
+            var maxData = dates.Max();
+
+            var dbData = _context.DataDecimal
+                .Where(e=> e.CollectionDate >= minData && e.CollectionDate <= maxData)
+                .ToList();
+
             var missingRecords = datasDistinct
-                .Where(d => !_context.Data.Any(e => e.CollectionDate == d.CollectionDate && e.GroupId == d.GroupId)).ToList();
+                .Where(d => !dbData.Any(e => 
+                        e.CollectionDate == d.CollectionDate 
+                        && e.GroupId == d.GroupId))
+                .ToList();
 
             _context.Data.AddRange(missingRecords);
 
             try
             {
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             catch (DbUpdateException)
             {
