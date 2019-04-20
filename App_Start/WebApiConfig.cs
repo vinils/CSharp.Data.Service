@@ -20,11 +20,6 @@
             builder.EntitySet<LimitDecimalDenormalized>("LimitDecimalDenormalizeds");
             builder.EntitySet<LimitStringDenormalized>("LimitStringDenormalizeds");
             builder
-                .EntityType<Group>()
-                .Collection
-                .Action("BulkInsertByName")
-                .Parameter<Controllers.GroupDictionaryByName>("Groups");
-            builder
                 .EntityType<Data>()
                 .Collection
                 .Action("BulkInsert")
