@@ -147,6 +147,10 @@
     <Compile Include="Migrations\201904082141134_Initial.Designer.cs">
       <DependentUpon>201904082141134_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906281643291_m1.cs" />
+    <Compile Include="Migrations\201906281643291_m1.Designer.cs">
+      <DependentUpon>201906281643291_m1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Cube.cs" />
     <Compile Include="Models\DataContext.cs" />
@@ -177,6 +181,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201904082141134_Initial.resx">
       <DependentUpon>201904082141134_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906281643291_m1.resx">
+      <DependentUpon>201906281643291_m1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

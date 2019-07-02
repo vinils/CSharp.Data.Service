@@ -29,6 +29,11 @@
                 .HasOptional(e => e.Parent)
                 .WithMany(e => e.Childs)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder
+                .Entity<DataDecimal>()
+                .Property(x => x.DecimalValue)
+                .HasPrecision(18, 10);
         }
     }
 }
