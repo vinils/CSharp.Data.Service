@@ -1,0 +1,1884 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="8/11/2019 4:44:16 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="VMVS1"
+  DTS:CreatorName="VMVS1\MyUser"
+  DTS:Description="Import DataContext"
+  DTS:DTSID="{9919D0C0-1003-4DE2-90D6-36F20F5A1B5A}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.1301.438"
+  DTS:LocaleID="1033"
+  DTS:MaxErrorCount="0"
+  DTS:ObjectName="Import"
+  DTS:ProtectionLevel="2"
+  DTS:VersionGUID="{DF53EDD3-78B7-4442-8C2A-73A3277EB4B9}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[DestinationConnectionOLEDB]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{9886667F-0ABB-45E6-A864-F360846443AB}"
+      DTS:ObjectName="DestinationConnectionOLEDB">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=192.168.15.35,1533;User ID=sa;Password=Senh@123;Initial Catalog=DataContext;Provider=SQLNCLI11;Auto Translate=false;">
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[SourceConnectionOLEDB]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{9E8CFD3A-D759-4C61-B943-BCDF4816A575}"
+      DTS:ObjectName="SourceConnectionOLEDB">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=192.168.15.35;User ID=sa;Password=Senh@123;Initial Catalog=DataContext;Provider=SQLNCLI11;Auto Translate=false;">
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Data Flow Task 1"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:DTSID="{6CD8D685-CE5D-4D22-AB66-F96E13F00A81}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Data Flow Task 1"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          defaultBufferSize="3145728"
+          version="1">
+          <components>
+            <component
+              refId="Package\Data Flow Task 1\Destination - Data"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Destination - Data"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Data]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">true</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task 1\Destination - Data.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DestinationConnectionOLEDB]"
+                  connectionManagerRefId="Package.ConnectionManagers[DestinationConnectionOLEDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input].Columns[GroupId]"
+                      cachedDataType="guid"
+                      cachedName="GroupId"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input].ExternalColumns[GroupId]"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].Columns[GroupId]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input].Columns[CollectionDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="CollectionDate"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input].ExternalColumns[CollectionDate]"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].Columns[CollectionDate]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input].Columns[DecimalValue]"
+                      cachedDataType="numeric"
+                      cachedName="DecimalValue"
+                      cachedPrecision="18"
+                      cachedScale="10"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input].ExternalColumns[DecimalValue]"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].Columns[DecimalValue]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input].Columns[StringValue]"
+                      cachedDataType="nText"
+                      cachedName="StringValue"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input].ExternalColumns[StringValue]"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].Columns[StringValue]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input].Columns[Discriminator]"
+                      cachedDataType="wstr"
+                      cachedLength="128"
+                      cachedName="Discriminator"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input].ExternalColumns[Discriminator]"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].Columns[Discriminator]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input].ExternalColumns[GroupId]"
+                      dataType="guid"
+                      name="GroupId" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input].ExternalColumns[CollectionDate]"
+                      dataType="dbTimeStamp"
+                      name="CollectionDate" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input].ExternalColumns[DecimalValue]"
+                      dataType="numeric"
+                      name="DecimalValue"
+                      precision="18"
+                      scale="10" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input].ExternalColumns[StringValue]"
+                      dataType="nText"
+                      name="StringValue" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input].ExternalColumns[Discriminator]"
+                      dataType="wstr"
+                      length="128"
+                      name="Discriminator" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task 1\Destination - Data.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Destination - Data.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Destination - Data.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Destination - Data.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Destination - Data.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task 1\Destination 1 - Group"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Destination 1 - Group"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Group]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">true</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task 1\Destination 1 - Group.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DestinationConnectionOLEDB]"
+                  connectionManagerRefId="Package.ConnectionManagers[DestinationConnectionOLEDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input].Columns[Id]"
+                      cachedDataType="guid"
+                      cachedName="Id"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input].ExternalColumns[Id]"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].Columns[Id]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input].Columns[Name]"
+                      cachedDataType="nText"
+                      cachedName="Name"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input].ExternalColumns[Name]"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].Columns[Name]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input].Columns[Initials]"
+                      cachedDataType="nText"
+                      cachedName="Initials"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input].ExternalColumns[Initials]"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].Columns[Initials]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input].Columns[ParentId]"
+                      cachedDataType="guid"
+                      cachedName="ParentId"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input].ExternalColumns[ParentId]"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].Columns[ParentId]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input].Columns[MeasureUnit]"
+                      cachedDataType="nText"
+                      cachedName="MeasureUnit"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input].ExternalColumns[MeasureUnit]"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].Columns[MeasureUnit]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input].ExternalColumns[Id]"
+                      dataType="guid"
+                      name="Id" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input].ExternalColumns[Name]"
+                      dataType="nText"
+                      name="Name" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input].ExternalColumns[Initials]"
+                      dataType="nText"
+                      name="Initials" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input].ExternalColumns[ParentId]"
+                      dataType="guid"
+                      name="ParentId" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input].ExternalColumns[MeasureUnit]"
+                      dataType="nText"
+                      name="MeasureUnit" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task 1\Destination 1 - Group.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Destination 1 - Group.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Destination 1 - Group.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Destination 1 - Group.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Destination 1 - Group.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Destination 2 - LimitDecimal"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[LimitDecimal]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">true</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DestinationConnectionOLEDB]"
+                  connectionManagerRefId="Package.ConnectionManagers[DestinationConnectionOLEDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input].Columns[GroupId]"
+                      cachedDataType="guid"
+                      cachedName="GroupId"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input].ExternalColumns[GroupId]"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].Columns[GroupId]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input].Columns[Priority]"
+                      cachedDataType="i4"
+                      cachedName="Priority"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input].ExternalColumns[Priority]"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].Columns[Priority]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input].Columns[Max]"
+                      cachedDataType="numeric"
+                      cachedName="Max"
+                      cachedPrecision="18"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input].ExternalColumns[Max]"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].Columns[Max]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input].Columns[Min]"
+                      cachedDataType="numeric"
+                      cachedName="Min"
+                      cachedPrecision="18"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input].ExternalColumns[Min]"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].Columns[Min]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input].Columns[Name]"
+                      cachedDataType="nText"
+                      cachedName="Name"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input].ExternalColumns[Name]"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].Columns[Name]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input].ExternalColumns[GroupId]"
+                      dataType="guid"
+                      name="GroupId" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input].ExternalColumns[Priority]"
+                      dataType="i4"
+                      name="Priority" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input].ExternalColumns[Max]"
+                      dataType="numeric"
+                      name="Max"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input].ExternalColumns[Min]"
+                      dataType="numeric"
+                      name="Min"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input].ExternalColumns[Name]"
+                      dataType="nText"
+                      name="Name" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Destination 3 - LimitDecimalDenormalized"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[LimitDecimalDenormalized]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">true</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DestinationConnectionOLEDB]"
+                  connectionManagerRefId="Package.ConnectionManagers[DestinationConnectionOLEDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].Columns[GroupId]"
+                      cachedDataType="guid"
+                      cachedName="GroupId"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[GroupId]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[GroupId]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].Columns[CollectionDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="CollectionDate"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[CollectionDate]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[CollectionDate]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].Columns[Name]"
+                      cachedDataType="nText"
+                      cachedName="Name"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[Name]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[Name]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].Columns[MinType]"
+                      cachedDataType="i4"
+                      cachedName="MinType"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[MinType]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[MinType]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].Columns[Min]"
+                      cachedDataType="numeric"
+                      cachedName="Min"
+                      cachedPrecision="18"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[Min]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[Min]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].Columns[MaxType]"
+                      cachedDataType="i4"
+                      cachedName="MaxType"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[MaxType]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[MaxType]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].Columns[Max]"
+                      cachedDataType="numeric"
+                      cachedName="Max"
+                      cachedPrecision="18"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[Max]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[Max]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].Columns[Color]"
+                      cachedDataType="i4"
+                      cachedName="Color"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[Color]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[Color]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[GroupId]"
+                      dataType="guid"
+                      name="GroupId" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[CollectionDate]"
+                      dataType="dbTimeStamp"
+                      name="CollectionDate" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[Name]"
+                      dataType="nText"
+                      name="Name" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[MinType]"
+                      dataType="i4"
+                      name="MinType" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[Min]"
+                      dataType="numeric"
+                      name="Min"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[MaxType]"
+                      dataType="i4"
+                      name="MaxType" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[Max]"
+                      dataType="numeric"
+                      name="Max"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input].ExternalColumns[Color]"
+                      dataType="i4"
+                      name="Color" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Destination 4 - LimitStringDenormalized"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[LimitStringDenormalized]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">true</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[DestinationConnectionOLEDB]"
+                  connectionManagerRefId="Package.ConnectionManagers[DestinationConnectionOLEDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Inputs[Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Inputs[Destination Input].Columns[GroupId]"
+                      cachedDataType="guid"
+                      cachedName="GroupId"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Inputs[Destination Input].ExternalColumns[GroupId]"
+                      lineageId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].Columns[GroupId]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Inputs[Destination Input].Columns[CollectionDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="CollectionDate"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Inputs[Destination Input].ExternalColumns[CollectionDate]"
+                      lineageId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].Columns[CollectionDate]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Inputs[Destination Input].Columns[Expected]"
+                      cachedDataType="nText"
+                      cachedName="Expected"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Inputs[Destination Input].ExternalColumns[Expected]"
+                      lineageId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].Columns[Expected]" />
+                    <inputColumn
+                      refId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Inputs[Destination Input].Columns[Color]"
+                      cachedDataType="i4"
+                      cachedName="Color"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Inputs[Destination Input].ExternalColumns[Color]"
+                      lineageId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].Columns[Color]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Inputs[Destination Input].ExternalColumns[GroupId]"
+                      dataType="guid"
+                      name="GroupId" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Inputs[Destination Input].ExternalColumns[CollectionDate]"
+                      dataType="dbTimeStamp"
+                      name="CollectionDate" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Inputs[Destination Input].ExternalColumns[Expected]"
+                      dataType="nText"
+                      name="Expected" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Inputs[Destination Input].ExternalColumns[Color]"
+                      dataType="i4"
+                      name="Color" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Inputs[Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task 1\Source - Data"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Source - Data"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Data]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task 1\Source - Data.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[SourceConnectionOLEDB]"
+                  connectionManagerRefId="Package.ConnectionManagers[SourceConnectionOLEDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].Columns[GroupId]"
+                      dataType="guid"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].ExternalColumns[GroupId]"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].Columns[GroupId]"
+                      name="GroupId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].Columns[CollectionDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].ExternalColumns[CollectionDate]"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].Columns[CollectionDate]"
+                      name="CollectionDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].Columns[DecimalValue]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].ExternalColumns[DecimalValue]"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].Columns[DecimalValue]"
+                      name="DecimalValue"
+                      precision="18"
+                      scale="10"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].Columns[StringValue]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].ExternalColumns[StringValue]"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].Columns[StringValue]"
+                      name="StringValue"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].Columns[Discriminator]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].ExternalColumns[Discriminator]"
+                      length="128"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].Columns[Discriminator]"
+                      name="Discriminator"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].ExternalColumns[GroupId]"
+                      dataType="guid"
+                      name="GroupId" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].ExternalColumns[CollectionDate]"
+                      dataType="dbTimeStamp"
+                      name="CollectionDate" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].ExternalColumns[DecimalValue]"
+                      dataType="numeric"
+                      name="DecimalValue"
+                      precision="18"
+                      scale="10" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].ExternalColumns[StringValue]"
+                      dataType="nText"
+                      name="StringValue" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output].ExternalColumns[Discriminator]"
+                      dataType="wstr"
+                      length="128"
+                      name="Discriminator" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Error Output].Columns[GroupId]"
+                      dataType="guid"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Error Output].Columns[GroupId]"
+                      name="GroupId" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Error Output].Columns[CollectionDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Error Output].Columns[CollectionDate]"
+                      name="CollectionDate" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Error Output].Columns[DecimalValue]"
+                      dataType="numeric"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Error Output].Columns[DecimalValue]"
+                      name="DecimalValue"
+                      precision="18"
+                      scale="10" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Error Output].Columns[StringValue]"
+                      dataType="nText"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Error Output].Columns[StringValue]"
+                      name="StringValue" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Error Output].Columns[Discriminator]"
+                      dataType="wstr"
+                      length="128"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Error Output].Columns[Discriminator]"
+                      name="Discriminator" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task 1\Source 1 - Group"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Source 1 - Group"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Group]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task 1\Source 1 - Group.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[SourceConnectionOLEDB]"
+                  connectionManagerRefId="Package.ConnectionManagers[SourceConnectionOLEDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].Columns[Id]"
+                      dataType="guid"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].ExternalColumns[Id]"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].Columns[Id]"
+                      name="Id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].Columns[Name]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].ExternalColumns[Name]"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].Columns[Name]"
+                      name="Name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].Columns[Initials]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].ExternalColumns[Initials]"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].Columns[Initials]"
+                      name="Initials"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].Columns[ParentId]"
+                      dataType="guid"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].ExternalColumns[ParentId]"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].Columns[ParentId]"
+                      name="ParentId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].Columns[MeasureUnit]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].ExternalColumns[MeasureUnit]"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].Columns[MeasureUnit]"
+                      name="MeasureUnit"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].ExternalColumns[Id]"
+                      dataType="guid"
+                      name="Id" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].ExternalColumns[Name]"
+                      dataType="nText"
+                      name="Name" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].ExternalColumns[Initials]"
+                      dataType="nText"
+                      name="Initials" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].ExternalColumns[ParentId]"
+                      dataType="guid"
+                      name="ParentId" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output].ExternalColumns[MeasureUnit]"
+                      dataType="nText"
+                      name="MeasureUnit" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Error Output].Columns[Id]"
+                      dataType="guid"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Error Output].Columns[Id]"
+                      name="Id" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Error Output].Columns[Name]"
+                      dataType="nText"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Error Output].Columns[Name]"
+                      name="Name" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Error Output].Columns[Initials]"
+                      dataType="nText"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Error Output].Columns[Initials]"
+                      name="Initials" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Error Output].Columns[ParentId]"
+                      dataType="guid"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Error Output].Columns[ParentId]"
+                      name="ParentId" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Error Output].Columns[MeasureUnit]"
+                      dataType="nText"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Error Output].Columns[MeasureUnit]"
+                      name="MeasureUnit" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task 1\Source 2 - LimitDecimal"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Source 2 - LimitDecimal"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[LimitDecimal]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[SourceConnectionOLEDB]"
+                  connectionManagerRefId="Package.ConnectionManagers[SourceConnectionOLEDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].Columns[GroupId]"
+                      dataType="guid"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].ExternalColumns[GroupId]"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].Columns[GroupId]"
+                      name="GroupId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].Columns[Priority]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].ExternalColumns[Priority]"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].Columns[Priority]"
+                      name="Priority"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].Columns[Max]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].ExternalColumns[Max]"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].Columns[Max]"
+                      name="Max"
+                      precision="18"
+                      scale="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].Columns[Min]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].ExternalColumns[Min]"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].Columns[Min]"
+                      name="Min"
+                      precision="18"
+                      scale="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].Columns[Name]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].ExternalColumns[Name]"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].Columns[Name]"
+                      name="Name"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].ExternalColumns[GroupId]"
+                      dataType="guid"
+                      name="GroupId" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].ExternalColumns[Priority]"
+                      dataType="i4"
+                      name="Priority" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].ExternalColumns[Max]"
+                      dataType="numeric"
+                      name="Max"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].ExternalColumns[Min]"
+                      dataType="numeric"
+                      name="Min"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output].ExternalColumns[Name]"
+                      dataType="nText"
+                      name="Name" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Error Output].Columns[GroupId]"
+                      dataType="guid"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Error Output].Columns[GroupId]"
+                      name="GroupId" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Error Output].Columns[Priority]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Error Output].Columns[Priority]"
+                      name="Priority" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Error Output].Columns[Max]"
+                      dataType="numeric"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Error Output].Columns[Max]"
+                      name="Max"
+                      precision="18"
+                      scale="2" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Error Output].Columns[Min]"
+                      dataType="numeric"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Error Output].Columns[Min]"
+                      name="Min"
+                      precision="18"
+                      scale="2" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Error Output].Columns[Name]"
+                      dataType="nText"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Error Output].Columns[Name]"
+                      name="Name" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Source 3 - LimitDecimalDenormalized"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[LimitDecimalDenormalized]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[SourceConnectionOLEDB]"
+                  connectionManagerRefId="Package.ConnectionManagers[SourceConnectionOLEDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[GroupId]"
+                      dataType="guid"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[GroupId]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[GroupId]"
+                      name="GroupId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[CollectionDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[CollectionDate]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[CollectionDate]"
+                      name="CollectionDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[Name]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[Name]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[Name]"
+                      name="Name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[MinType]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[MinType]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[MinType]"
+                      name="MinType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[Min]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[Min]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[Min]"
+                      name="Min"
+                      precision="18"
+                      scale="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[MaxType]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[MaxType]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[MaxType]"
+                      name="MaxType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[Max]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[Max]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[Max]"
+                      name="Max"
+                      precision="18"
+                      scale="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[Color]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[Color]"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].Columns[Color]"
+                      name="Color"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[GroupId]"
+                      dataType="guid"
+                      name="GroupId" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[CollectionDate]"
+                      dataType="dbTimeStamp"
+                      name="CollectionDate" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[Name]"
+                      dataType="nText"
+                      name="Name" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[MinType]"
+                      dataType="i4"
+                      name="MinType" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[Min]"
+                      dataType="numeric"
+                      name="Min"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[MaxType]"
+                      dataType="i4"
+                      name="MaxType" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[Max]"
+                      dataType="numeric"
+                      name="Max"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output].ExternalColumns[Color]"
+                      dataType="i4"
+                      name="Color" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[GroupId]"
+                      dataType="guid"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[GroupId]"
+                      name="GroupId" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[CollectionDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[CollectionDate]"
+                      name="CollectionDate" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[Name]"
+                      dataType="nText"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[Name]"
+                      name="Name" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[MinType]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[MinType]"
+                      name="MinType" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[Min]"
+                      dataType="numeric"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[Min]"
+                      name="Min"
+                      precision="18"
+                      scale="2" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[MaxType]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[MaxType]"
+                      name="MaxType" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[Max]"
+                      dataType="numeric"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[Max]"
+                      name="Max"
+                      precision="18"
+                      scale="2" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[Color]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[Color]"
+                      name="Color" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Source 4 - LimitStringDenormalized"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[LimitStringDenormalized]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[SourceConnectionOLEDB]"
+                  connectionManagerRefId="Package.ConnectionManagers[SourceConnectionOLEDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].Columns[GroupId]"
+                      dataType="guid"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].ExternalColumns[GroupId]"
+                      lineageId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].Columns[GroupId]"
+                      name="GroupId"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].Columns[CollectionDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].ExternalColumns[CollectionDate]"
+                      lineageId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].Columns[CollectionDate]"
+                      name="CollectionDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].Columns[Expected]"
+                      dataType="nText"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].ExternalColumns[Expected]"
+                      lineageId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].Columns[Expected]"
+                      name="Expected"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].Columns[Color]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].ExternalColumns[Color]"
+                      lineageId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].Columns[Color]"
+                      name="Color"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].ExternalColumns[GroupId]"
+                      dataType="guid"
+                      name="GroupId" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].ExternalColumns[CollectionDate]"
+                      dataType="dbTimeStamp"
+                      name="CollectionDate" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].ExternalColumns[Expected]"
+                      dataType="nText"
+                      name="Expected" />
+                    <externalMetadataColumn
+                      refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output].ExternalColumns[Color]"
+                      dataType="i4"
+                      name="Color" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Error Output].Columns[GroupId]"
+                      dataType="guid"
+                      lineageId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Error Output].Columns[GroupId]"
+                      name="GroupId" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Error Output].Columns[CollectionDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Error Output].Columns[CollectionDate]"
+                      name="CollectionDate" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Error Output].Columns[Expected]"
+                      dataType="nText"
+                      lineageId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Error Output].Columns[Expected]"
+                      name="Expected" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Error Output].Columns[Color]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Error Output].Columns[Color]"
+                      name="Color" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Data Flow Task 1.Paths[OLE DB Source Output]"
+              endId="Package\Data Flow Task 1\Destination - Data.Inputs[Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Data Flow Task 1\Source - Data.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Data Flow Task 1.Paths[OLE DB Source Output1]"
+              endId="Package\Data Flow Task 1\Destination 1 - Group.Inputs[Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Data Flow Task 1\Source 1 - Group.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Data Flow Task 1.Paths[OLE DB Source Output2]"
+              endId="Package\Data Flow Task 1\Destination 2 - LimitDecimal.Inputs[Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Data Flow Task 1\Source 2 - LimitDecimal.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Data Flow Task 1.Paths[OLE DB Source Output3]"
+              endId="Package\Data Flow Task 1\Destination 3 - LimitDecimalDenormalized.Inputs[Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Data Flow Task 1\Source 3 - LimitDecimalDenormalized.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Data Flow Task 1.Paths[OLE DB Source Output4]"
+              endId="Package\Data Flow Task 1\Destination 4 - LimitStringDenormalized.Inputs[Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Data Flow Task 1\Source 4 - LimitStringDenormalized.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Preparation SQL Task 1"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:DTSID="{F5BF53B7-172A-489E-9957-38EBFD95AB27}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:FailPackageOnFailure="True"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Preparation SQL Task 1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{9886667F-0ABB-45E6-A864-F360846443AB}"
+          SQLTask:SqlStatementSource="TRUNCATE TABLE [dbo].[Data]&#xA;GO&#xA;TRUNCATE TABLE [dbo].[Group]&#xA;GO&#xA;TRUNCATE TABLE [dbo].[LimitDecimal]&#xA;GO&#xA;TRUNCATE TABLE [dbo].[LimitDecimalDenormalized]&#xA;GO&#xA;TRUNCATE TABLE [dbo].[LimitStringDenormalized]&#xA;GO&#xA;" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[{F64424ED-8D10-401A-B476-22B9C9AE0CD1\}]"
+      DTS:CreationName=""
+      DTS:DTSID="{F64424ED-8D10-401A-B476-22B9C9AE0CD1}"
+      DTS:From="Package\Preparation SQL Task 1"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="{F64424ED-8D10-401A-B476-22B9C9AE0CD1}"
+      DTS:To="Package\Data Flow Task 1" />
+  </DTS:PrecedenceConstraints>
+</DTS:Executable>

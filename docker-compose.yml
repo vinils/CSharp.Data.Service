@@ -6,12 +6,24 @@ services:
         ports:
             - "8002:80"
         depends_on:
-            - db
-    db:
+            - dbdata
+    dbdata:
         image: "vinils/mssql-server-windows-developer"
         ports:
             - "1433:1433"
         environment:
-            SA_PASSWORD: "Senh@123"
+            sa_password: "Senh@123"
+            ACCEPT_EULA: "Y"
+    dbdw:
+        build: ./DataAnalyze/.
+        ports:
+            - "1633:1433"
+        environment:
+            sa_password: "Senh@123"
             ACCEPT_EULA: "Y"
             MSSQL_AGENT_ENABLED: "true"
+            start_date: "2005-01-01"
+            end_date: "2022-12-31"
+            currentDb: dbdw
+            dataContextDb: dbdata
+            dataContextPassword: "Senh@123"
