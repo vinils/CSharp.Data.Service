@@ -3,12 +3,14 @@ version: '3'
 services:
     app:
         build: .
+        container_name: data1_app
         ports:
             - "8002:80"
         depends_on:
             - dbdata
     dbdata:
         image: "vinils/mssql-server-windows-developer"
+        container_name: data1_db
         ports:
             - "1433:1433"
         environment:
@@ -16,8 +18,9 @@ services:
             ACCEPT_EULA: "Y"
     dbdw:
         build: ./DataAnalyze/.
+        container_name: data1_dbdw
         ports:
-            - "1633:1433"
+            - "1533:1433"
         environment:
             sa_password: "Senh@123"
             ACCEPT_EULA: "Y"
