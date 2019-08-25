@@ -9,7 +9,7 @@ services:
         depends_on:
             - dbdata
         environment:
-            DataContext: "Persist Security Info=False;User ID=sa;Password=Senh@123;Data Source=dbdata;MultipleActiveResultSets=True; Initial Catalog=DataContext"
+            DataContext: "Persist Security Info=False;User ID=sa;Password=Senh@123;Data Source=dbdata,1433;MultipleActiveResultSets=True; Initial Catalog=DataContext"
     dbdata:
         image: "vinils/mssql-server-windows-developer"
         container_name: data_db
