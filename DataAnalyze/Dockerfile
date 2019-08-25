@@ -14,11 +14,11 @@ WORKDIR .\DataAnalyze
 
 #SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
-#bug - network connection
-RUN do { $count = $count + 1; $healfcheck = (sqlcmd -Q "select 1"); Start-Sleep -Seconds 10 } while(!$healfcheck -and $count -ne 60) ;
+##bug - Sqlcmd: Error: Microsoft ODBC Driver 13 for SQL Server : TCP Provider: No connection could be made because the target machine actively refused it
+#RUN sqlcmd -S localhost,1433 -i .\DataContext\CREATE_DATABASE_DataContext.sql ; \
+RUN do { $count = $count + 1; $healfcheck = (sqlcmd -S localhost,1433 -i .\DataContext\CREATE_DATABASE_DataContext.sql); Start-Sleep -Seconds 10 } while(!$healfcheck -and $count -ne 60) ;
 
-RUN sqlcmd -S localhost,1433 -i .\DataContext\CREATE_DATABASE_DataContext.sql ; \
-		sqlcmd -S localhost,1433 -i .\DataContext\CREATE_TABLE_Data.sql ; \
+RUN sqlcmd -S localhost,1433 -i .\DataContext\CREATE_TABLE_Data.sql ; \
 		sqlcmd -S localhost,1433 -i .\DataContext\CREATE_TABLE_Group.sql ; \
 		sqlcmd -S localhost,1433 -i .\DataContext\CREATE_TABLE_LimitDecimal.sql ; \
 		sqlcmd -S localhost,1433 -i .\DataContext\CREATE_TABLE_LimitDecimalDenormalized.sql ; \
