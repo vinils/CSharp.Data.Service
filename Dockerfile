@@ -16,3 +16,5 @@ RUN msbuild /p:Configuration=Release
 FROM mcr.microsoft.com/dotnet/framework/aspnet:4.7.2 AS runtime
 WORKDIR /inetpub/wwwroot
 COPY --from=build /app/. ./
+
+ENTRYPOINT ["C:\\ServiceMonitor.exe", "w3svc"]
