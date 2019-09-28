@@ -222,7 +222,7 @@
             => _context.Group;
 
         // GET: odata/Groups2(5)
-        [EnableQuery]
+        [EnableQuery(MaxExpansionDepth = 10)]
         public SingleResult<Group> GetGroup([FromODataUri] Guid key)
             => SingleResult.Create(_context.Group.Where(group => group.Id == key));
 
