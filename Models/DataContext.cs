@@ -17,6 +17,9 @@
             : base("name=DataContext")
         {
             //Configuration.LazyLoadingEnabled = false;
+
+            var objectContext = (this as System.Data.Entity.Infrastructure.IObjectContextAdapter).ObjectContext;
+            objectContext.CommandTimeout = int.MaxValue;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
