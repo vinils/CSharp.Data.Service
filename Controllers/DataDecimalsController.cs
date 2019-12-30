@@ -5,18 +5,18 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Web.Http;
-    using System.Data.Entity.Infrastructure;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
 
     public class DataDecimalsController : ODataController
     {
-        private DataContext _context;
+        private readonly DataContext _context;
 
-        public DataDecimalsController()
-            => _context = new DataContext();
+        //public DataDecimalsController()
+        //    => _context = new DataContext();
 
         public DataDecimalsController(DataContext context)
-            => _context = context;
+            => _context = context ?? throw new ArgumentNullException(nameof(context));
 
         // GET: odata/DataDecimals
         [EnableQuery]
@@ -66,7 +66,7 @@
         //    return Updated(data);
         //}
 
-        public async Task<IHttpActionResult> Post(DataDecimal data)
+        public async Task<IActionResult> Post([FromBody] DataDecimal data)
         {
             if (!ModelState.IsValid)
             {

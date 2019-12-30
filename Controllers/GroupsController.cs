@@ -2,12 +2,12 @@
 {
     using Data.Models;
     using Microsoft.AspNet.OData;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
-    using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Web.Http;
 
     public static class MyExtensions
     {
@@ -28,14 +28,14 @@
             }
         }
 
-        public static DictionaryTree<Group, Y> ToDictionaryTree<Y>(this System.Data.Entity.DbSet<Group> groupsDb, Func<Group, Y> getKey, Group rootGroup = null) where Y : class
-        {
-            var groups = groupsDb.ToList();
-            var rootGroups = groups.Where(g => g.ParentId == rootGroup?.Id).ToList();
-            var root = new DictionaryTree<Group, Y>(getKey, rootGroup);
-            groups.CastListToDictionaryTree(root, rootGroups);
-            return root;
-        }
+        //public static DictionaryTree<Group, Y> ToDictionaryTree<Y>(this System.Data.Entity.DbSet<Group> groupsDb, Func<Group, Y> getKey, Group rootGroup = null) where Y : class
+        //{
+        //    var groups = groupsDb.ToList();
+        //    var rootGroups = groups.Where(g => g.ParentId == rootGroup?.Id).ToList();
+        //    var root = new DictionaryTree<Group, Y>(getKey, rootGroup);
+        //    groups.CastListToDictionaryTree(root, rootGroups);
+        //    return root;
+        //}
 
         public static string RemoveAccentsToUpper(this string text)
         {
@@ -208,13 +208,13 @@
 
     public class GroupsController : ODataController
     {
-        private DataContext _context;
+        private readonly DataContext _context;
 
-        public GroupsController()
-            => _context = new DataContext();
+        //public GroupsController()
+        //    => _context = new DataContext();
 
         public GroupsController(DataContext context)
-            => _context = context;
+            => _context = context ?? throw new ArgumentNullException(nameof(context));
 
         // GET: odata/Groups2
         [EnableQuery(MaxExpansionDepth = 10)]
@@ -254,7 +254,7 @@
         //}
 
         // POST: odata/Groups2
-        public async Task<IHttpActionResult> Post(Group group)
+        public async Task<IActionResult> Post([FromBody] Group group)
         {
             if (!ModelState.IsValid)
             {
@@ -385,7 +385,7 @@
         private bool GroupExists(Guid key)
             => _context.Group.Any(e => e.Id == key);
 
-        public IHttpActionResult BulkInsertByName(ODataActionParameters parameters)
+        public IActionResult BulkInsertByName(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
             {

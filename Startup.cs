@@ -1,62 +1,113 @@
-﻿namespace Data
+namespace CSharp.Data.Service
 {
-    using Data.Models;
-    using Microsoft.AspNet.OData.Batch;
+    using global::Data.Models;
     using Microsoft.AspNet.OData.Builder;
     using Microsoft.AspNet.OData.Extensions;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
     using Microsoft.OData.Edm;
     using System;
     using System.Linq;
-    using System.Web.Http;
 
-    public static class WebApiConfig
+    public class Startup
     {
-        private static IEdmModel GetEdmModel()
+        private static IEdmModel GetEdmModel(IServiceProvider serviceProvider)
         {
-            var builder = new ODataConventionModelBuilder();
+            var builder = new ODataConventionModelBuilder(serviceProvider);
             builder.EntitySet<Group>("Groups");
             builder.EntitySet<Data>("Datas");
             builder.EntitySet<DataDecimal>("DataDecimals");
-            builder.EntitySet<LimitDecimalDenormalized>("LimitDecimalDenormalizeds");
-            builder.EntitySet<LimitStringDenormalized>("LimitStringDenormalizeds");
+
+            builder.EntitySet<LimitDecimalDenormalized>("LimitDecimalDenormalizeds")
+                .EntityType
+                .HasKey(e => new { e.GroupId, e.CollectionDate });
+
+            builder
+                .EntitySet<LimitStringDenormalized>("LimitStringDenormalizeds")
+                .EntityType
+                .HasKey(e => new { e.GroupId, e.CollectionDate });
+
             builder
                 .EntityType<Data>()
+                .HasKey(e => new { e.GroupId, e.CollectionDate })
                 .Collection
                 .Action("BulkInsert")
                 .ReturnsCollectionFromEntitySet<Data>("Datas")
                 .CollectionEntityParameter<Data>("Datas");
+            
             var groupBulkInsertByName = builder
                 .EntityType<Group>()
                 .Collection
                 .Action("BulkInsertByName")
                 .ReturnsCollectionFromEntitySet<Group>("Groups");
             groupBulkInsertByName
-                .EntityParameter<Controllers.GroupNameTree>("NewGroups");
+                .EntityParameter<global::Data.Controllers.GroupNameTree>("NewGroups");
             groupBulkInsertByName
                 .CollectionParameter<string>("RootPath");
 
             return builder.GetEdmModel();
         }
 
-        public static void Register(HttpConfiguration config)
+        public Startup(IConfiguration configuration)
         {
-            // Web API configuration and services
-            config.EnableCors(new System.Web.Http.Cors.EnableCorsAttribute("*", "*", "*") { SupportsCredentials = true });
-
-            //// Web API routes
-            //config.MapHttpAttributeRoutes();
-
-            var odataBatchHandler = new UnbufferedODataBatchHandler(GlobalConfiguration.DefaultServer);
-            odataBatchHandler.MessageQuotas.MaxOperationsPerChangeset = 1_000_000;
-            odataBatchHandler.MessageQuotas.MaxPartsPerBatch = 1_000_000;
-            odataBatchHandler.MessageQuotas.MaxReceivedMessageSize = Int64.MaxValue;
-
-            config.Filter().Expand().Select().OrderBy().MaxTop(null).Count();
-            config.MapODataServiceRoute(
-                routeName: "ODataRouteV4",
-                routePrefix: "odata",
-                  batchHandler: odataBatchHandler,
-                  model: GetEdmModel());
+            Configuration = configuration;
         }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            //services.AddControllers();
+            services.AddOData();
+            //services.AddODataQueryFilter();
+
+            services.AddDbContext<DataContext>(options 
+                => options.UseSqlServer(
+                    Configuration.GetConnectionString("DataConn"),
+                    sqlServerOptions => sqlServerOptions.CommandTimeout(int.MaxValue)));
+
+            services.AddMvc(option => option.EnableEndpointRouting = false);
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+            //services.AddMvc().AddJsonOptions(opt =>
+            //{
+            //    opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            //});
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            //IAssemblyProvider provider = app.ApplicationServices.GetRequiredService<IAssemblyProvider>();
+            //IEdmModel model = GetEdmModel(provider);
+
+            app.UseMvc(o =>
+            {
+                o.Filter().Count().Expand().OrderBy().Select();
+                o.MapODataServiceRoute("ODataRoutes", "odata", GetEdmModel(app.ApplicationServices));
+            });
+
+            app.UseHttpsRedirection();
+
+            //app.UseRouting();
+
+            //app.UseAuthorization();
+
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapControllers();
+            //});
+        }
+
     }
 }

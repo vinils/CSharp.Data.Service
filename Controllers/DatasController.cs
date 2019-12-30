@@ -2,21 +2,21 @@
 {
     using Data.Models;
     using Microsoft.AspNet.OData;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
     using System;
-    using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Web.Http;
 
     public class DatasController : ODataController
     {
         private DataContext _context;
 
-        public DatasController()
-            => _context = new DataContext();
+        //public DatasController()
+        //    => _context = new DataContext();
 
         public DatasController(DataContext context)
-            => _context = context;
+            => _context = context ?? throw new ArgumentNullException(nameof(context));
 
         // GET: odata/Datas
         [EnableQuery]
@@ -67,7 +67,7 @@
         //}
 
         [HttpPost]
-        public IHttpActionResult BulkInsert(ODataActionParameters parameters)
+        public IActionResult BulkInsert(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
             {
@@ -112,7 +112,7 @@
             return Ok(missingRecords);
         }
 
-        public async Task<IHttpActionResult> Post(Data data)
+        public async Task<IActionResult> Post([FromBody] Data data)
         {
             if (!ModelState.IsValid)
             {

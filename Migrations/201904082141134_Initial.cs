@@ -1,107 +1,152 @@
-namespace Data
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+namespace CSharp.Data.Service.Migrations
 {
-    using System;
-    using System.Data.Entity.Migrations;
-    
-    public partial class Initial : DbMigration
+    public partial class Initial : Migration
     {
-        public override void Up()
+        protected override void Up(MigrationBuilder migrationBuilder)
         {
-            CreateTable(
-                "dbo.Data",
-                c => new
-                    {
-                        GroupId = c.Guid(nullable: false),
-                        CollectionDate = c.DateTime(nullable: false),
-                        DecimalValue = c.Decimal(precision: 18, scale: 2),
-                        StringValue = c.String(),
-                        Discriminator = c.String(nullable: false, maxLength: 128),
-                    })
-                .PrimaryKey(t => new { t.GroupId, t.CollectionDate })
-                .ForeignKey("dbo.Group", t => t.GroupId, cascadeDelete: true)
-                .Index(t => t.GroupId);
-            
-            CreateTable(
-                "dbo.Group",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        Name = c.String(nullable: false),
-                        Initials = c.String(),
-                        ParentId = c.Guid(),
-                        MeasureUnit = c.String(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Group", t => t.ParentId)
-                .Index(t => t.ParentId);
-            
-            CreateTable(
-                "dbo.LimitDecimal",
-                c => new
-                    {
-                        GroupId = c.Guid(nullable: false),
-                        Priority = c.Int(nullable: false),
-                        Max = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Min = c.Decimal(precision: 18, scale: 2),
-                        Name = c.String(),
-                    })
-                .PrimaryKey(t => new { t.GroupId, t.Priority, t.Max })
-                .ForeignKey("dbo.Group", t => t.GroupId, cascadeDelete: true)
-                .ForeignKey("dbo.LimitDecimal", t => new { t.GroupId, t.Priority, t.Min })
-                .Index(t => t.GroupId)
-                .Index(t => new { t.GroupId, t.Priority, t.Min });
-            
-            CreateTable(
-                "dbo.LimitDecimalDenormalized",
-                c => new
-                    {
-                        GroupId = c.Guid(nullable: false),
-                        CollectionDate = c.DateTime(nullable: false),
-                        Name = c.String(),
-                        MinType = c.Int(),
-                        Min = c.Decimal(precision: 18, scale: 2),
-                        MaxType = c.Int(),
-                        Max = c.Decimal(precision: 18, scale: 2),
-                        Color = c.Int(),
-                    })
-                .PrimaryKey(t => new { t.GroupId, t.CollectionDate })
-                .ForeignKey("dbo.Data", t => new { t.GroupId, t.CollectionDate })
-                .Index(t => new { t.GroupId, t.CollectionDate });
-            
-            CreateTable(
-                "dbo.LimitStringDenormalized",
-                c => new
-                    {
-                        GroupId = c.Guid(nullable: false),
-                        CollectionDate = c.DateTime(nullable: false),
-                        Expected = c.String(),
-                        Color = c.Int(),
-                    })
-                .PrimaryKey(t => new { t.GroupId, t.CollectionDate })
-                .ForeignKey("dbo.Data", t => new { t.GroupId, t.CollectionDate })
-                .Index(t => new { t.GroupId, t.CollectionDate });
-            
+            migrationBuilder.CreateTable(
+                name: "Group",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Initials = table.Column<string>(nullable: true),
+                    ParentId = table.Column<Guid>(nullable: true),
+                    MeasureUnit = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Group", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Group_Group_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "Group",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Data",
+                columns: table => new
+                {
+                    GroupId = table.Column<Guid>(nullable: false),
+                    CollectionDate = table.Column<DateTime>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
+                    DecimalValue = table.Column<decimal>(type: "decimal(18,10)", nullable: true),
+                    StringValue = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Data", x => new { x.GroupId, x.CollectionDate });
+                    table.ForeignKey(
+                        name: "FK_Data_Group_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Group",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LimitDecimal",
+                columns: table => new
+                {
+                    GroupId = table.Column<Guid>(nullable: false),
+                    Priority = table.Column<int>(nullable: false),
+                    Max = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Min = table.Column<decimal>(nullable: true),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LimitDecimal", x => new { x.GroupId, x.Priority, x.Max });
+                    table.ForeignKey(
+                        name: "FK_LimitDecimal_Group_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Group",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LimitDecimal_LimitDecimal_GroupId_Priority_Min",
+                        columns: x => new { x.GroupId, x.Priority, x.Min },
+                        principalTable: "LimitDecimal",
+                        principalColumns: new[] { "GroupId", "Priority", "Max" },
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LimitDecimalDenormalized",
+                columns: table => new
+                {
+                    GroupId = table.Column<Guid>(nullable: false),
+                    CollectionDate = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    MinType = table.Column<int>(nullable: true),
+                    Min = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    MaxType = table.Column<int>(nullable: true),
+                    Max = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Color = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LimitDecimalDenormalized", x => new { x.GroupId, x.CollectionDate });
+                    table.ForeignKey(
+                        name: "FK_LimitDecimalDenormalized_Data_GroupId_CollectionDate",
+                        columns: x => new { x.GroupId, x.CollectionDate },
+                        principalTable: "Data",
+                        principalColumns: new[] { "GroupId", "CollectionDate" },
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LimitStringDenormalized",
+                columns: table => new
+                {
+                    GroupId = table.Column<Guid>(nullable: false),
+                    CollectionDate = table.Column<DateTime>(nullable: false),
+                    Expected = table.Column<string>(nullable: true),
+                    Color = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LimitStringDenormalized", x => new { x.GroupId, x.CollectionDate });
+                    table.ForeignKey(
+                        name: "FK_LimitStringDenormalized_Data_GroupId_CollectionDate",
+                        columns: x => new { x.GroupId, x.CollectionDate },
+                        principalTable: "Data",
+                        principalColumns: new[] { "GroupId", "CollectionDate" },
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Group_ParentId",
+                table: "Group",
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LimitDecimal_GroupId_Priority_Min",
+                table: "LimitDecimal",
+                columns: new[] { "GroupId", "Priority", "Min" });
         }
-        
-        public override void Down()
+
+        protected override void Down(MigrationBuilder migrationBuilder)
         {
-            DropForeignKey("dbo.LimitStringDenormalized", new[] { "GroupId", "CollectionDate" }, "dbo.Data");
-            DropForeignKey("dbo.LimitDecimalDenormalized", new[] { "GroupId", "CollectionDate" }, "dbo.Data");
-            DropForeignKey("dbo.Group", "ParentId", "dbo.Group");
-            DropForeignKey("dbo.LimitDecimal", new[] { "GroupId", "Priority", "Min" }, "dbo.LimitDecimal");
-            DropForeignKey("dbo.LimitDecimal", "GroupId", "dbo.Group");
-            DropForeignKey("dbo.Data", "GroupId", "dbo.Group");
-            DropIndex("dbo.LimitStringDenormalized", new[] { "GroupId", "CollectionDate" });
-            DropIndex("dbo.LimitDecimalDenormalized", new[] { "GroupId", "CollectionDate" });
-            DropIndex("dbo.LimitDecimal", new[] { "GroupId", "Priority", "Min" });
-            DropIndex("dbo.LimitDecimal", new[] { "GroupId" });
-            DropIndex("dbo.Group", new[] { "ParentId" });
-            DropIndex("dbo.Data", new[] { "GroupId" });
-            DropTable("dbo.LimitStringDenormalized");
-            DropTable("dbo.LimitDecimalDenormalized");
-            DropTable("dbo.LimitDecimal");
-            DropTable("dbo.Group");
-            DropTable("dbo.Data");
+            migrationBuilder.DropTable(
+                name: "LimitDecimal");
+
+            migrationBuilder.DropTable(
+                name: "LimitDecimalDenormalized");
+
+            migrationBuilder.DropTable(
+                name: "LimitStringDenormalized");
+
+            migrationBuilder.DropTable(
+                name: "Data");
+
+            migrationBuilder.DropTable(
+                name: "Group");
         }
     }
 }
