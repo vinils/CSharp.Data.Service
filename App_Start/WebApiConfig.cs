@@ -54,7 +54,7 @@
             config.Filter().Expand().Select().OrderBy().MaxTop(null).Count();
             config.MapODataServiceRoute(
                 routeName: "ODataRouteV4",
-                routePrefix: "odata/v4",
+                routePrefix: "odata",
                   batchHandler: odataBatchHandler,
                   model: GetEdmModel());
         }
