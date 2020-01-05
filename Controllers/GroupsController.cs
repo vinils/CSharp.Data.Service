@@ -2,12 +2,14 @@
 {
     using Data.Models;
     using Microsoft.AspNet.OData;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
     using System;
     using System.Collections.Generic;
-    using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Web.Http;
 
     public static class MyExtensions
     {
@@ -28,14 +30,14 @@
             }
         }
 
-        public static DictionaryTree<Group, Y> ToDictionaryTree<Y>(this System.Data.Entity.DbSet<Group> groupsDb, Func<Group, Y> getKey, Group rootGroup = null) where Y : class
-        {
-            var groups = groupsDb.ToList();
-            var rootGroups = groups.Where(g => g.ParentId == rootGroup?.Id).ToList();
-            var root = new DictionaryTree<Group, Y>(getKey, rootGroup);
-            groups.CastListToDictionaryTree(root, rootGroups);
-            return root;
-        }
+        //public static DictionaryTree<Group, Y> ToDictionaryTree<Y>(this System.Data.Entity.DbSet<Group> groupsDb, Func<Group, Y> getKey, Group rootGroup = null) where Y : class
+        //{
+        //    var groups = groupsDb.ToList();
+        //    var rootGroups = groups.Where(g => g.ParentId == rootGroup?.Id).ToList();
+        //    var root = new DictionaryTree<Group, Y>(getKey, rootGroup);
+        //    groups.CastListToDictionaryTree(root, rootGroups);
+        //    return root;
+        //}
 
         public static string RemoveAccentsToUpper(this string text)
         {
@@ -208,13 +210,13 @@
 
     public class GroupsController : ODataController
     {
-        private DataContext _context;
+        private readonly DataContext _context;
 
-        public GroupsController()
-            => _context = new DataContext();
+        //public GroupsController()
+        //    => _context = new DataContext();
 
         public GroupsController(DataContext context)
-            => _context = context;
+            => _context = context ?? throw new ArgumentNullException(nameof(context));
 
         // GET: odata/Groups2
         [EnableQuery(MaxExpansionDepth = 10)]
@@ -254,7 +256,7 @@
         //}
 
         // POST: odata/Groups2
-        public async Task<IHttpActionResult> Post(Group group)
+        public async Task<IActionResult> Post([FromBody] Group group)
         {
             if (!ModelState.IsValid)
             {
@@ -385,7 +387,117 @@
         private bool GroupExists(Guid key)
             => _context.Group.Any(e => e.Id == key);
 
-        public IHttpActionResult BulkInsertByName(ODataActionParameters parameters)
+        public IActionResult ChildsRecursively(Guid? groupId)
+        {
+            if (!groupId.HasValue)
+                return BadRequest();
+
+            var group = _context.Group
+                .Include("Datas.LimitDenormalized")
+                .Include(e => e.Childs)
+                .Single(e => e.Id == groupId);
+
+            var groups = new List<Group> { group };
+
+            ChildsRecursively(group);
+
+            return Ok(JsonConvert.SerializeObject(
+                groups,
+                Formatting.Indented,
+                new JsonSerializerSettings
+                {
+                    ContractResolver = new CustomContractResolver(),
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }));
+
+
+            //var qry = _context.Group
+            //    .Include("Datas.LimitDenormalized")
+            //    .Include(e => e.Childs)
+            //    .AsEnumerable()
+            //    .Single(e => e.Id == groupId)
+            //    ;
+
+            //var aaa = asdf.ToList();
+
+            //return Ok("");
+
+            //var qry = _context.Group
+            //    .Include(e => e.Datas)
+            //    .Include(e => e.Childs)
+            //        .ThenInclude(e => e.Childs)
+            //    .AsEnumerable()
+            //    .Where(e => e.Id == groupId.Value);
+
+            //var list = qry.ToList();
+
+            //return Ok(JsonConvert.SerializeObject(
+            //    qry, 
+            //    Formatting.Indented,
+            //    new JsonSerializerSettings
+            //    {
+            //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            //    }));
+        }
+        public class CustomContractResolver : Newtonsoft.Json.Serialization.DefaultContractResolver
+        {
+            protected override Newtonsoft.Json.Serialization.JsonObjectContract CreateObjectContract(Type objectType)
+            {
+                var objectContract = base.CreateObjectContract(objectType);
+                objectContract.Properties.Add(new JsonProperty
+                {
+                    PropertyName = "odata.type",
+                    PropertyType = typeof(string),
+                    ValueProvider = new StaticValueProvider(objectType.FullName),
+                    Readable = true
+                });
+
+                return objectContract;
+            }
+
+            private class StaticValueProvider : IValueProvider
+            {
+                private readonly object _value;
+
+                public StaticValueProvider(object value)
+                {
+                    _value = value;
+                }
+
+                public object GetValue(object target)
+                {
+                    return _value;
+                }
+
+                public void SetValue(object target, object value)
+                {
+                    throw new NotSupportedException();
+                }
+            }
+        }
+        private void ChildsRecursively(Group group)
+        {
+            var newChilds = new List<Group>();
+
+            //var group = _context.Group.Single(e => e.Id == groupId);
+
+            foreach (var child in group.Childs)
+            {
+
+                var g = _context.Group
+                    .Include("Datas.LimitDenormalized")
+                    .Include(e => e.Childs)
+                    .Single(e => e.Id == child.Id);
+
+                newChilds.Add(g);
+
+                ChildsRecursively(g);
+            }
+
+            group.Childs = newChilds;
+        }
+
+        public IActionResult BulkInsertByName(ODataActionParameters parameters)
         {
             if (!ModelState.IsValid)
             {

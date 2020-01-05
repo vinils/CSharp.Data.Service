@@ -1,20 +1,22 @@
-FROM mcr.microsoft.com/dotnet/framework/sdk:4.7.2 AS build
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
+EXPOSE 80
+EXPOSE 443
 
-# copy csproj and restore as distinct layers
-COPY *.sln .
-COPY *.csproj ./
-COPY *.config ./
-RUN nuget restore
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+WORKDIR /src
+COPY ["CSharp.Data.Service.csproj", ""]
+RUN dotnet restore "./CSharp.Data.Service.csproj"
+COPY . .
+WORKDIR "/src/."
+RUN dotnet build "CSharp.Data.Service.csproj" -c Release -o /app/build
 
-# copy everything else and build app
-COPY . ./
+FROM build AS publish
+RUN dotnet publish "CSharp.Data.Service.csproj" -c Release -o /app/publish
+
+FROM base AS final
 WORKDIR /app
-RUN msbuild /p:Configuration=Release
-
-
-FROM mcr.microsoft.com/dotnet/framework/aspnet:4.7.2 AS runtime
-WORKDIR /inetpub/wwwroot
-COPY --from=build /app/. ./
-
-ENTRYPOINT ["C:\\ServiceMonitor.exe", "w3svc"]
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "CSharp.Data.Service.dll"]

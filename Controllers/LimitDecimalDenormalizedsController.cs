@@ -2,21 +2,21 @@
 {
     using Data.Models;
     using Microsoft.AspNet.OData;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
     using System;
-    using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Threading.Tasks;
-    using System.Web.Http;
 
     public class LimitDecimalDenormalizedsController : ODataController
     {
-        private DataContext _context;
+        private readonly DataContext _context;
 
-        public LimitDecimalDenormalizedsController()
-            => _context = new DataContext();
+        //public LimitDecimalDenormalizedsController()
+        //    => _context = new DataContext();
 
         public LimitDecimalDenormalizedsController(DataContext context)
-            => _context = context;
+            => _context = context ?? throw new ArgumentNullException(nameof(context));
 
         // GET: odata/Groups2
         [EnableQuery]
@@ -61,7 +61,7 @@
         //}
 
         // POST: odata/Groups2
-        public async Task<IHttpActionResult> Post(LimitDecimalDenormalized LimitDecimalDenormalized)
+        public async Task<IActionResult> Post([FromBody] LimitDecimalDenormalized LimitDecimalDenormalized)
         {
             if (!ModelState.IsValid)
             {
