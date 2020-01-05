@@ -18,6 +18,8 @@ namespace CSharp.Data.Service
         private static IEdmModel GetEdmModel(IServiceProvider serviceProvider)
         {
             var builder = new ODataConventionModelBuilder(serviceProvider);
+            //builder.EnableLowerCamelCase();
+
             builder.EntitySet<Group>("Groups");
             builder.EntitySet<Data>("Datas");
             builder.EntitySet<DataDecimal>("DataDecimals");
@@ -49,6 +51,17 @@ namespace CSharp.Data.Service
             groupBulkInsertByName
                 .CollectionParameter<string>("RootPath");
 
+            builder.EntityType<DataDecimal>()
+                .Collection
+                .Function("DecimalTotal")
+                .Returns<string>();
+
+            builder.EntityType<Group>()
+                .Collection
+                .Function("ChildsRecursively")
+                //.ReturnsFromEntitySet<Group>("Group");
+                .Returns<string>();
+
             return builder.GetEdmModel();
         }
 
@@ -70,8 +83,11 @@ namespace CSharp.Data.Service
                 => options.UseSqlServer(
                     Configuration.GetConnectionString("DataConn"),
                     sqlServerOptions => sqlServerOptions.CommandTimeout(int.MaxValue)));
-
-            services.AddMvc(option => option.EnableEndpointRouting = false);
+            
+            services.AddMvc(option => {
+                option.MaxIAsyncEnumerableBufferLimit = int.MaxValue;
+                option.EnableEndpointRouting = false;
+            });
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             //services.AddMvc().AddJsonOptions(opt =>
@@ -93,7 +109,7 @@ namespace CSharp.Data.Service
 
             app.UseMvc(o =>
             {
-                o.Filter().Count().Expand().OrderBy().Select();
+                o.Filter().Expand().Count().Expand().OrderBy().Select().MaxTop(int.MaxValue);
                 o.MapODataServiceRoute("ODataRoutes", "odata", GetEdmModel(app.ApplicationServices));
             });
 

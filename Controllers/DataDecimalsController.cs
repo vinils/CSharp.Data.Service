@@ -156,5 +156,22 @@
         private bool DataExists(Guid groupId, DateTime collectionDate)
             => _context.DataDecimal
             .Any(e => e.GroupId == groupId && e.CollectionDate == collectionDate);
+
+        public IActionResult DecimalTotal(Guid? groupId, DateTime? startDate, DateTime? endDate, decimal? startValue, decimal? endValue)
+        {
+            if (!groupId.HasValue)
+                return BadRequest();
+
+            var qry = _context.DataDecimal
+                .Where(dec => dec.GroupId == groupId
+                      && (!startDate.HasValue || dec.CollectionDate >= startDate.Value) && (!endDate.HasValue || dec.CollectionDate < endDate.Value)
+                      && (!startValue.HasValue || dec.DecimalValue >= startValue.Value) && (!endValue.HasValue || dec.DecimalValue < endValue.Value))
+                .GroupBy(dec => dec.GroupId)
+                .Select(dec => new { GroupId = dec.Key, Sum = dec.Sum(e => e.DecimalValue), Count = dec.Count() });
+
+            var list = qry.ToList();
+            var ret = Newtonsoft.Json.JsonConvert.SerializeObject(qry);
+            return Ok(Newtonsoft.Json.JsonConvert.SerializeObject(qry));
+        }
     }
 }

@@ -4,6 +4,8 @@
     using Microsoft.AspNet.OData;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -384,6 +386,116 @@
 
         private bool GroupExists(Guid key)
             => _context.Group.Any(e => e.Id == key);
+
+        public IActionResult ChildsRecursively(Guid? groupId)
+        {
+            if (!groupId.HasValue)
+                return BadRequest();
+
+            var group = _context.Group
+                .Include("Datas.LimitDenormalized")
+                .Include(e => e.Childs)
+                .Single(e => e.Id == groupId);
+
+            var groups = new List<Group> { group };
+
+            ChildsRecursively(group);
+
+            return Ok(JsonConvert.SerializeObject(
+                groups,
+                Formatting.Indented,
+                new JsonSerializerSettings
+                {
+                    ContractResolver = new CustomContractResolver(),
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }));
+
+
+            //var qry = _context.Group
+            //    .Include("Datas.LimitDenormalized")
+            //    .Include(e => e.Childs)
+            //    .AsEnumerable()
+            //    .Single(e => e.Id == groupId)
+            //    ;
+
+            //var aaa = asdf.ToList();
+
+            //return Ok("");
+
+            //var qry = _context.Group
+            //    .Include(e => e.Datas)
+            //    .Include(e => e.Childs)
+            //        .ThenInclude(e => e.Childs)
+            //    .AsEnumerable()
+            //    .Where(e => e.Id == groupId.Value);
+
+            //var list = qry.ToList();
+
+            //return Ok(JsonConvert.SerializeObject(
+            //    qry, 
+            //    Formatting.Indented,
+            //    new JsonSerializerSettings
+            //    {
+            //        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            //    }));
+        }
+        public class CustomContractResolver : Newtonsoft.Json.Serialization.DefaultContractResolver
+        {
+            protected override Newtonsoft.Json.Serialization.JsonObjectContract CreateObjectContract(Type objectType)
+            {
+                var objectContract = base.CreateObjectContract(objectType);
+                objectContract.Properties.Add(new JsonProperty
+                {
+                    PropertyName = "odata.type",
+                    PropertyType = typeof(string),
+                    ValueProvider = new StaticValueProvider(objectType.FullName),
+                    Readable = true
+                });
+
+                return objectContract;
+            }
+
+            private class StaticValueProvider : IValueProvider
+            {
+                private readonly object _value;
+
+                public StaticValueProvider(object value)
+                {
+                    _value = value;
+                }
+
+                public object GetValue(object target)
+                {
+                    return _value;
+                }
+
+                public void SetValue(object target, object value)
+                {
+                    throw new NotSupportedException();
+                }
+            }
+        }
+        private void ChildsRecursively(Group group)
+        {
+            var newChilds = new List<Group>();
+
+            //var group = _context.Group.Single(e => e.Id == groupId);
+
+            foreach (var child in group.Childs)
+            {
+
+                var g = _context.Group
+                    .Include("Datas.LimitDenormalized")
+                    .Include(e => e.Childs)
+                    .Single(e => e.Id == child.Id);
+
+                newChilds.Add(g);
+
+                ChildsRecursively(g);
+            }
+
+            group.Childs = newChilds;
+        }
 
         public IActionResult BulkInsertByName(ODataActionParameters parameters)
         {
