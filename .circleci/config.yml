@@ -1,0 +1,23 @@
+version: 2.1
+jobs:
+  build:
+    description: Setup and run application tests
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1-buster
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dotnet-packages-v1-{{ checksum "CSharp.Data.Service.csproj" }}
+      - run:
+          name: "Install project dependencies"
+          command: dotnet.exe restore
+      - save_cache:
+          paths:
+            - C:\Users\circleci\.nuget\packages
+          key: dotnet-packages-v1-{{ checksum "CSharp.Data.Service.csproj" }}
+      - run:
+          name: Build
+          command: dotnet build -c Release
+
+
