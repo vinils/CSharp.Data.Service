@@ -83,11 +83,14 @@ namespace CSharp.Data.Service
                 => options.UseSqlServer(
                     Configuration.GetConnectionString("DataConn"),
                     sqlServerOptions => sqlServerOptions.CommandTimeout(int.MaxValue)));
-            
+
+            services.AddCors();
+
             services.AddMvc(option => {
                 option.MaxIAsyncEnumerableBufferLimit = int.MaxValue;
                 option.EnableEndpointRouting = false;
             });
+
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             //services.AddMvc().AddJsonOptions(opt =>
@@ -99,6 +102,10 @@ namespace CSharp.Data.Service
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(
+                options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
+            );
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
