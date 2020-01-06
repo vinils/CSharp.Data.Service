@@ -113,7 +113,6 @@ namespace CSharp.Data.Service
                 o.MapODataServiceRoute("ODataRoutes", "odata", GetEdmModel(app.ApplicationServices));
             });
 
-            app.UseWebSockets();
             app.UseHttpsRedirection();
 
             //app.UseRouting();
