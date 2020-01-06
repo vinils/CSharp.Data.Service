@@ -8,6 +8,4 @@ Data Service
 <BR>
 docker build -t vinils/csharp-data-service .
 <BR>
-docker run -e "DataContext=Persist Security Info=False;User ID=sa;Password=P@ssword1;Data <BR>
-<BR>
-Source=w19docker6,1433;MultipleActiveResultSets=True; Initial Catalog=DataContext" -p 8002:80 -p 8443:443 -d vinils/csharp-data-service
+docker run -e "DataContext=Persist Security Info=False;User ID=sa;Password=P@ssword1;DataSource=w19docker6,1433;MultipleActiveResultSets=True; Initial Catalog=DataContext" -p 8002:80 -p 8443:443 -d vinils/csharp-data-service
