@@ -3,7 +3,7 @@ jobs:
   build:
     description: Setup and run application tests
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:3.1-buster
+      - image: jetcipher/circleci-dotnet-core:3.1
     steps:
       - checkout
       - restore_cache:
@@ -11,7 +11,7 @@ jobs:
             - dotnet-packages-v1-{{ checksum "CSharp.Data.Service.csproj" }}
       - run:
           name: "Install project dependencies"
-          command: dotnet.exe restore
+          command: dotnet restore
       - save_cache:
           paths:
             - C:\Users\circleci\.nuget\packages
