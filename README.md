@@ -8,4 +8,4 @@ Data Service
 <BR>
 docker build -t vinils/csharp-data-service .
 <BR>
-docker run -e "DataContext=Persist Security Info=False;User ID=sa;Password=P@ssword1;DataSource=w19docker6,1433;MultipleActiveResultSets=True; Initial Catalog=DataContext" -p 8002:80 -p 8443:443 -d vinils/csharp-data-service
+docker run -dt -v "/home/docker/UserSecrets:/root/.microsoft/usersecrets:ro" -v "/home/docker/Https:/root/.aspnet/https:ro" -e "ASPNETCORE_ENVIRONMENT=Development" -e "ASPNETCORE_URLS=https://+:443;http://+:80" -P --name data-api -p 8002:80 -p 8443:443 vinils/csharp-data-service
