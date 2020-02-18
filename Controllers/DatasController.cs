@@ -88,7 +88,7 @@
             var minData = dates.Min();
             var maxData = dates.Max();
 
-            var dbData = _context.DataDecimal
+            var dbData = _context.Data
                 .Where(e=> e.CollectionDate >= minData && e.CollectionDate <= maxData)
                 .ToList();
 
