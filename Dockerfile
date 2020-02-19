@@ -6,8 +6,6 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
-COPY ["UserSecrets", "/root/.microsoft/usersecrets:ro"]
-COPY ["Https", "/root/.aspnet/https:ro"]
 WORKDIR /src
 COPY ["CSharp.Data.Service.csproj", ""]
 RUN dotnet restore "./CSharp.Data.Service.csproj"
