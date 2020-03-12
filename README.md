@@ -2,6 +2,8 @@
 Data Service
 
 [![CircleCI](https://circleci.com/gh/vinils/CSharp.Data.Service.svg?style=svg)](https://circleci.com/gh/vinils/CSharp.Data.Service)
+[![Docker Pulls](https://img.shields.io/docker/pulls/vinils/csharp-data-service.svg)](https://hub.docker.com/r/vinils/csharp-data-service)
+[![Docker Stars](https://img.shields.io/docker/stars/vinils/csharp-data-service.svg)](https://hub.docker.com/r/vinils/csharp-data-service)
 <a href="https://hub.docker.com/r/vinils/csharp-data-service/builds" target="_blank">Docker Builds</a>
 
 git clone https://github.com/vinils/CSharp.Saude.FitbitTask.git  
